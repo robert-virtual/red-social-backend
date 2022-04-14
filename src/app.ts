@@ -1,6 +1,7 @@
 import express from "express";
 import { __prod__ } from "./constantes";
 import authRouter from "./routes/auth";
+import postsRouter from "./routes/posts";
 import dotenv from "dotenv";
 import morgan from "morgan";
 import cors from "cors";
@@ -17,5 +18,6 @@ app.use(cors());
 app.use(express.json());
 
 app.use("/", authRouter);
+app.use("/posts", postsRouter);
 
 app.listen(port, () => console.log("app running on port: " + port));

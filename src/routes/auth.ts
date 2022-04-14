@@ -63,7 +63,10 @@ router.get("/refresh", async (req, res) => {
   }
   let payload;
   try {
-    payload = verifyJWT(String(refreshToken), process.env.JWT_SECRET_REFRESH!);
+    payload = verifyJWT(
+      String(refreshToken),
+      process.env.JWT_SECRET_REFRESH!
+    ) as JwtPayload;
     const tokens = await prisma.tokens.findMany({
       where: {
         userId: payload.id,
