@@ -5,8 +5,30 @@ import { auth } from "../middlewares/auth";
 import { upload } from "../helpers/upload-s3";
 const prisma = new PrismaClient();
 
-router.get("/", (req, res) => {
-  res.json({});
+router.get("/", auth, async (req, res) => {
+  const { type } = req.query;
+  let posts;
+  if (type == "profile") {
+    posts = await prisma.post.findMany({
+      include: {
+        images: true,
+        user: true,
+      },
+      where: {
+        userId: req.userId,
+      },
+    });
+  } else {
+    posts = await prisma.post.findMany({
+      include: {
+        images: true,
+        user: true,
+      },
+    });
+  }
+  console.log(posts);
+
+  res.json(posts);
 });
 
 router.post("/", upload.array("images"), async (req, res) => {
